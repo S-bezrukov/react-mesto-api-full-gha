@@ -1,0 +1,20 @@
+.elements__icon {
+  padding: 0;
+  opacity: 1;
+  cursor: pointer;
+  background: url(../../../images/heart.svg) center center / 22px 19px no-repeat;
+  width: 22px;
+  height: 19px;
+  border: 0;
+  margin: 0 0 5px;
+}
+
+.elements__icon:hover {
+  opacity: 0.5;
+  transition: 0.8s;
+}
+
+.elements__icon:not(:hover) {
+  opacity: 1;
+  transition: 0.8s;
+}

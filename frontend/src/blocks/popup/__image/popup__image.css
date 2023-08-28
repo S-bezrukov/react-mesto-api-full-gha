@@ -1,0 +1,32 @@
+.popup__image {
+  background: url(../../../images/close-icon.svg) center center / 32px 32px no-repeat transparent;
+  position: absolute;
+  top: -41px;
+  right: -41px;
+  cursor: pointer;
+  opacity: 1;
+  border: 0;
+  padding: 0;
+  width: 32px;
+  height: 32px;
+}
+
+@media screen and (max-width: 540px) {
+  .popup__image {
+    background-size: 20px 20px;
+    top: -36px;
+    right: 0;
+    width: 20px;
+    height: 20px;
+  }
+}
+
+.popup__image:hover {
+  opacity: 0.6;
+  transition: 0.8s;
+}
+
+.popup__image:not(:hover) {
+  opacity: 1;
+  transition: 0.8s;
+}

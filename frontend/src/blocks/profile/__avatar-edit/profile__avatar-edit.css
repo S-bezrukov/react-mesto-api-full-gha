@@ -1,0 +1,16 @@
+.profile__avatar-edit {
+  background: none;
+  border: none;
+  border-radius: 50%;
+  height: 120px;
+  margin: 0;
+  padding: 0;
+  position: absolute;
+  width: 120px;
+}
+
+.profile__avatar-edit:hover {
+  background: rgba(0,0,0,.9) url(../../../images/big-pencil.svg) no-repeat 50%;
+  cursor: pointer;
+  opacity: .8;
+}

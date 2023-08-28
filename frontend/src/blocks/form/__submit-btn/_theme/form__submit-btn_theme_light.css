@@ -1,0 +1,11 @@
+.form__submit-btn_theme_light {
+  background: #fff!important;
+  color: #000;
+  margin-top: auto;
+  cursor: pointer;
+}
+
+
+.form__submit-btn_theme_light:hover {
+  opacity: .6;
+}
