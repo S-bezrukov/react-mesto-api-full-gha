@@ -14,6 +14,7 @@ import Login from "./Login";
 import * as auth from "../utils/auth";
 import ProctectedRouteElement from "./ProctectedRoute";
 import InfoTooltip from "./InfoTooltip";
+import Cookies from 'js-cookie';
 
 function App() {
   const [isAvatarPopupOpen, setIsEditAvatarPopupOpen] = React.useState(false);
@@ -180,9 +181,8 @@ function App() {
  
   function handleUpdateAvatar(data) {
     setIsLoading(true);
-    const avatarData = { avatar: data }; // Подготовка данных для редактирования аватара
-    
-    api.editAvatar(avatarData) // Вызов метода editAvatar с подготовленными данными
+  
+    api.editAvatar(data) // Вызов метода editAvatar с подготовленными данными
       .then((result) => {
         setCurrentUser(result.data);
         closeAllPopups();
@@ -194,6 +194,7 @@ function App() {
         setIsLoading(false);
       });
   }
+  
 
   function handleAddPlaceSubmit(data) {
     setIsLoading(true);

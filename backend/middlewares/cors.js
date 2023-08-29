@@ -2,7 +2,8 @@ const allowedCors = [
   'http://localhost:3000',
   'http://localhost:3001',
   'http://localhost:27017',
-  'htts://',
+  'http://',
+  'https://',
 ];
 
 module.exports = (req, res, next) => {
