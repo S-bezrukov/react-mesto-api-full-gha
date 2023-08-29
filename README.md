@@ -9,8 +9,8 @@
 
 ## Ссылки на проект
 
-IP-адрес x.x.x.x
+IP-адрес 58.252.101.224
 
-Frontend https://...
+Frontend https://dev-mesto.work/
 
-Backend https://...
+Backend https://api.dev-mesto.work/
