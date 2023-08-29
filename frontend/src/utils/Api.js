@@ -18,20 +18,12 @@ class Api {
 
   getInitialCards() {
     return this._request(`${this._options.baseUrl}/cards`, {
-      headers: {
-        ...this._options.headers,
-        Authorization: `Bearer ${this._getTokenFromCookies()}`,
-      },
       credentials: 'include',
     });
   }
 
   getUserInfo() {
     return this._request(`${this._options.baseUrl}/users/me`, {
-      headers: {
-        ...this._options.headers,
-        Authorization: `Bearer ${this._getTokenFromCookies()}`,
-      },
       credentials: 'include',
     });
   }
@@ -40,8 +32,7 @@ class Api {
     return this._request(`${this._options.baseUrl}/cards/${id}/likes`, {
       method: 'PUT',
       headers: {
-        ...this._options.headers,
-        Authorization: `Bearer ${this._getTokenFromCookies()}`,
+        'Content-Type': 'application/json',
       },
       credentials: 'include',
     });
@@ -51,8 +42,7 @@ class Api {
     return this._request(`${this._options.baseUrl}/cards/${id}/likes`, {
       method: 'DELETE',
       headers: {
-        ...this._options.headers,
-        Authorization: `Bearer ${this._getTokenFromCookies()}`,
+        'Content-Type': 'application/json',
       },
       credentials: 'include',
     });
@@ -61,10 +51,6 @@ class Api {
   deleteCard(id) {
     return this._request(`${this._options.baseUrl}/cards/${id}`, {
       method: 'DELETE',
-      headers: {
-        ...this._options.headers,
-        Authorization: `Bearer ${this._getTokenFromCookies()}`,
-      },
       credentials: 'include',
     });
   }
@@ -73,8 +59,7 @@ class Api {
     return this._request(`${this._options.baseUrl}/users/me`, {
       method: 'PATCH',
       headers: {
-        ...this._options.headers,
-        Authorization: `Bearer ${this._getTokenFromCookies()}`,
+        'Content-Type': 'application/json',
       },
       body: JSON.stringify({
         name: profileData.name,
@@ -88,8 +73,7 @@ class Api {
     return this._request(`${this._options.baseUrl}/users/me/avatar`, {
       method: 'PATCH',
       headers: {
-        ...this._options.headers,
-        Authorization: `Bearer ${this._getTokenFromCookies()}`,
+        'Content-Type': 'application/json',
       },
       body: JSON.stringify({
         avatar: avatarData.avatar,
@@ -101,8 +85,7 @@ class Api {
   addNewCard({ name, link }) {
     return this._request(`${this._options.baseUrl}/cards`, {
       headers: {
-        ...this._options.headers,
-        Authorization: `Bearer ${this._getTokenFromCookies()}`,
+        'Content-Type': 'application/json',
       },
       method: 'POST',
       body: JSON.stringify({
@@ -113,11 +96,6 @@ class Api {
     });
   }
 
-  _getTokenFromCookies() {
-    // Здесь вы можете использовать необходимый способ получения токена из куков
-    // Например, с помощью библиотеки js-cookie
-    return Cookies.get('token');
-  }
 }
 
 const api = new Api({

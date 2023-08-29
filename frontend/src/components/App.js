@@ -167,7 +167,7 @@ function App() {
     setIsLoading(true);
     api.profileEdit(data)
       .then((result) => {
-        setCurrentUser(result);
+        setCurrentUser(result.data);
         closeAllPopups();
       })
       .catch((err) => {
@@ -200,7 +200,7 @@ function App() {
     setIsLoading(true);
     api.addNewCard(data)
       .then((newCard) => {
-        setCards([newCard, ...cards]);
+        setCards([newCard.data, ...cards]);
         closeAllPopups();
       })
       .catch((err) => {
