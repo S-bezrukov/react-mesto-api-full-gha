@@ -1,4 +1,5 @@
-const BASE_URL = "http://localhost:3000";
+const BASE_URL = "http://api.mesto.sb.nomoredomainsicu.ru";
+// const BASE_URL = "http://localhost:3000";
 // const BASE_URL = "https://auth.nomoreparties.co";
 export function register(email, password) {
   return fetch(`${BASE_URL}/signup`, {
