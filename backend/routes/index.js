@@ -12,6 +12,7 @@ router.get('/crash-test', () => {
     throw new Error('Сервер сейчас упадёт');
   }, 0);
 });
+
 router.post('/signup', celebrate({
   body: Joi.object().keys({
     email: Joi.string().required().email(),

@@ -8,11 +8,11 @@ import api from "../utils/Api";
 import EditProfilePopup from "./EditProfilePopup";
 import EditAvatarPopup from "./EditAvatarPopup";
 import AddPlacePopup from "./AddPlacePopup";
-import { Route, Routes, useNavigate } from "react-router-dom";
+import { Route, Routes, useLocation, useNavigate } from "react-router-dom";
 import Register from "./Register";
 import Login from "./Login";
 import * as auth from "../utils/auth";
-import ProctectedRouteElement from "./ProctectedRoute";
+import ProctectedRoute from "./ProctectedRoute";
 import InfoTooltip from "./InfoTooltip";
 
 function App() {
@@ -38,29 +38,25 @@ function App() {
   });
   const [isSuccess, setIsSuccess] = React.useState(false);
   const navigate = useNavigate();
+  const location = useLocation();
 
   const handleLogin = React.useCallback(() => {
     setLoggedIn(true);
   }, [setLoggedIn]);
 
-  React.useEffect(() => {
-    function handleTokenCheck() {
-      auth
-        .checkToken()
-        .then((res) => {
-          if (res) {
-            handleLogin();
-            setUserEmail(res.email);
-            navigate("/");
-          }
-        })
-        .catch((err) => console.log(err));
-    }
-  
-    handleTokenCheck(); // Вызываем функцию сразу
-  
-    // Остальной код useEffect
-  }, [handleLogin, navigate, setUserEmail]);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  const handleTokenCheck = () => {
+    auth
+      .checkToken()
+      .then((res) => {
+        if (res) {
+          handleLogin();
+          setUserEmail(res.email);
+          navigate("/");
+        }
+      })
+      .catch((err) => console.log(err));
+  };
 
   function signOut() {
     auth.signOut()
@@ -123,7 +119,9 @@ function App() {
       });
   }
 
-
+  React.useEffect(() => {
+    handleTokenCheck();
+  }, [location.pathname]);
 
   React.useEffect(() => {
     if (loggedIn) {
@@ -251,7 +249,7 @@ function App() {
           <Route 
             path="/"
             element={
-              <ProctectedRouteElement
+              <ProctectedRoute
                 element={Main}
                 onEditAvatar={handleEditAvatarClick} 
                 onEditProfile={handleEditProfileClick} 
