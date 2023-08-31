@@ -38,7 +38,7 @@ const deleteCard = (req, res, next) => {
         return Card.findByIdAndRemove(req.params.cardId)
           .then(() => res.send({ message: 'Карточка удалена' }));
       } else {
-        return next(new ForbiddenError('Нельзя удалять не ваши карточки'));
+        return next(new ForbiddenError('Нельзя удалять не ваши карточкии'));
       }
     })
     .catch(next);
