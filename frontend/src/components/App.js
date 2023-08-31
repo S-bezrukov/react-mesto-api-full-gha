@@ -14,7 +14,6 @@ import Login from "./Login";
 import * as auth from "../utils/auth";
 import ProctectedRouteElement from "./ProctectedRoute";
 import InfoTooltip from "./InfoTooltip";
-import Cookies from 'js-cookie';
 
 function App() {
   const [isAvatarPopupOpen, setIsEditAvatarPopupOpen] = React.useState(false);

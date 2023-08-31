@@ -1,4 +1,3 @@
-import Cookies from 'js-cookie';
 class Api {
   constructor(options) {
     this._options = options;

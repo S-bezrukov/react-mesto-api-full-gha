@@ -3,7 +3,7 @@ const allowedCors = [
   'http://localhost:3001',
   'http://127.0.0.1:27017',
   'http://api.mesto.sb.nomoredomainsicu.ru',
-  'https://mesto.sb.nomoredomainsicu.ru',
+  'http://mesto.sb.nomoredomainsicu.ru',
 ];
 
 module.exports = (req, res, next) => {
