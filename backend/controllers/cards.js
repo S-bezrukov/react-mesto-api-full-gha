@@ -46,7 +46,7 @@ const createCard = (req, res, next) => {
     });
 };
 
-const deleteCard = (req, res, next) => {
+function deleteCard(req, res, next) {
   const { cardId } = req.params;
   if (!mongoose.isValidObjectId(cardId)) {
     return next(new BadRequestError('Некорректный ID карточки'));
@@ -63,15 +63,14 @@ const deleteCard = (req, res, next) => {
       }
     })
     .catch(next);
-};
+  return null;
+}
 
-const likeCard = (req, res, next) => {
+function likeCard(req, res, next) {
   const { cardId } = req.params;
-
   if (!mongoose.isValidObjectId(cardId)) {
     return next(new BadRequestError('Некорректный ID карточки'));
   }
-
   Card.findByIdAndUpdate(
     cardId,
     { $addToSet: { likes: req.user._id } },
@@ -79,11 +78,11 @@ const likeCard = (req, res, next) => {
   )
     .populate({
       path: 'owner',
-      select: '-name -about -avatar -email -password', // Исключить поле name из owner
+      select: '-name -about -avatar -email -password',
     })
     .populate({
       path: 'likes',
-      select: '-name -about -avatar -email -password', // Исключить поле name из likes
+      select: '-name -about -avatar -email -password',
     })
     .select('-about -avatar')
     .then((card) => {
@@ -93,15 +92,14 @@ const likeCard = (req, res, next) => {
       res.send(card);
     })
     .catch(next);
-};
+  return null;
+}
 
 const dislikeCard = (req, res, next) => {
   const { cardId } = req.params;
-
   if (!mongoose.isValidObjectId(cardId)) {
     return next(new BadRequestError('Некорректный ID карточки'));
   }
-
   Card.findByIdAndUpdate(
     cardId,
     { $pull: { likes: req.user._id } },
@@ -109,11 +107,11 @@ const dislikeCard = (req, res, next) => {
   )
     .populate({
       path: 'owner',
-      select: '-name -about -avatar -email -password', // Исключить поле name из owner
+      select: '-name -about -avatar -email -password',
     })
     .populate({
       path: 'likes',
-      select: '-name -about -avatar -email -password', // Исключить поле name из likes
+      select: '-name -about -avatar -email -password',
     })
     .select('-about -avatar')
     .then((card) => {
@@ -123,6 +121,7 @@ const dislikeCard = (req, res, next) => {
       res.send(card);
     })
     .catch(next);
+  return null;
 };
 
 module.exports = {

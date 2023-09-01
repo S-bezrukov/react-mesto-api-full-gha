@@ -1,11 +1,13 @@
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
+const mongoose = require('mongoose');
 const { ValidationError } = require('mongoose').Error;
 const User = require('../models/user');
 const {
   CREATE_STATUS,
 } = require('../utils/constants');
 const BadRequestError = require('../errors/BadRequestError');
+const NotFoundError = require('../errors/NotFoundError');
 const ConflictError = require('../errors/ConflictError');
 const sendUser = require('../utils/sendUser');
 
@@ -39,12 +41,10 @@ const getUsers = (req, res, next) => {
 };
 const getUser = (req, res, next) => {
   const { userId } = req.params;
-
   if (!mongoose.isValidObjectId(userId)) {
     return next(new BadRequestError('Некорректный ID пользователя'));
   }
-
-  User.findById(userId)
+  return User.findById(userId)
     .then((user) => {
       if (!user) {
         throw new NotFoundError('Пользователь не найден');
