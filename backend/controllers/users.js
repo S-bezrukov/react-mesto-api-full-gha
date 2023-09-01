@@ -10,8 +10,8 @@ const ConflictError = require('../errors/ConflictError');
 const sendUser = require('../utils/sendUser');
 
 const { NODE_ENV, JWT_SECRET } = process.env;
-const updateData = (req, res, next) => {
-  User.findByIdAndUpdate(req.user._id, req.body, { new: true, runValidators: true })
+const updateData = (userId, updates, res, next) => {
+  User.findByIdAndUpdate(userId, updates, { new: true, runValidators: true })
     .then((user) => sendUser(res, user))
     .catch((err) => {
       if (err instanceof ValidationError) {
@@ -21,6 +21,17 @@ const updateData = (req, res, next) => {
       }
     });
 };
+
+const updateProfile = (req, res, next) => {
+  const { name, about } = req.body;
+  updateData(req.user._id, { name, about }, res, next);
+};
+
+const updateProfileAvatar = (req, res, next) => {
+  const { avatar } = req.body;
+  updateData(req.user._id, { avatar }, res, next);
+};
+
 const getUsers = (req, res, next) => {
   User.find({})
     .then((user) => res.send({ data: user }))
@@ -28,8 +39,18 @@ const getUsers = (req, res, next) => {
 };
 const getUser = (req, res, next) => {
   const { userId } = req.params;
+
+  if (!mongoose.isValidObjectId(userId)) {
+    return next(new BadRequestError('Некорректный ID пользователя'));
+  }
+
   User.findById(userId)
-    .then((user) => sendUser(res, user))
+    .then((user) => {
+      if (!user) {
+        throw new NotFoundError('Пользователь не найден');
+      }
+      sendUser(res, user);
+    })
     .catch(next);
 };
 const getMe = (req, res, next) => {
@@ -68,8 +89,6 @@ const createUser = (req, res, next) => {
     .catch(next);
 };
 
-const updateProfile = (req, res, next) => updateData(req, res, next);
-const updateProfileAvatar = (req, res, next) => updateData(req, res, next);
 const login = (req, res, next) => {
   const { email, password } = req.body;
   User.findUserByCredentials(email, password)

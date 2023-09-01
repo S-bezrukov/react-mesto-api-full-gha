@@ -98,7 +98,8 @@ class Api {
 }
 
 const api = new Api({
-  baseUrl: 'https://api.mesto.sb.nomoredomainsicu.ru',
+  // baseUrl: 'https://api.mesto.sb.nomoredomainsicu.ru',
+  baseUrl: 'http://localhost:3000',
 });
 
 export default api;
