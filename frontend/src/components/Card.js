@@ -16,10 +16,8 @@ function Card(props) {
     props.onCardDelete(props.card);
   }
 
-  const isOwn = props.card.owner._id === currentUser._id;
-  const isLiked = props.card.likes.some(
-    (owner) => owner._id === currentUser._id
-  );
+  const isOwn = props.card.owner === currentUser._id;
+  const isLiked = props.card.likes.includes(currentUser._id);
 
   const cardLikeButtonClassName = `elements__icon ${
     isLiked && "elements__icon_active"

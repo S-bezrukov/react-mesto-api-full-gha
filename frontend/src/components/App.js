@@ -209,20 +209,22 @@ function App() {
   }
 
   function handleCardLike(card) {
-    const isLiked = card.likes.some((i) => i._id === currentUser._id);
+    const isLiked = card.likes.includes(currentUser._id);
+    const cardId = card._id;
+  
     if (!isLiked) {
-      api.handleLikeCard(card._id)
+      api.handleLikeCard(cardId)
         .then((newCard) => {
           setCards((state) =>
-            state.map((c) => (c._id === card._id ? newCard : c))
+            state.map((c) => (c._id === cardId ? newCard : c))
           );
         })
         .catch((err) => console.log(err));
     } else {
-      api.deleteLikeCard(card._id)
+      api.deleteLikeCard(cardId)
         .then((newCard) => {
           setCards((state) =>
-            state.map((c) => (c._id === card._id ? newCard : c))
+            state.map((c) => (c._id === cardId ? newCard : c))
           );
         })
         .catch((err) => console.log(err));

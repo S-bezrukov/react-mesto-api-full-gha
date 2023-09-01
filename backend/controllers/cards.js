@@ -11,14 +11,7 @@ const {
 const getCards = (req, res, next) => {
   Card.find({})
     .sort({ createdAt: -1 })
-    .populate({
-      path: 'owner',
-      select: '-name -about -avatar -email -password', // Исключить поле name из owner
-    })
-    .populate({
-      path: 'likes',
-      select: '-name -about -avatar -email -password', // Исключить поле name из likes
-    })
+    .select('-about -avatar -email -password')
     .then((cards) => res.send({ data: cards }))
     .catch(next);
 };
@@ -26,16 +19,6 @@ const getCards = (req, res, next) => {
 const createCard = (req, res, next) => {
   const { name, link } = req.body;
   Card.create({ name, link, owner: req.user._id })
-    .then((card) => Card.populate(card, [
-      {
-        path: 'owner',
-        select: '-name -about -avatar -email -password',
-      },
-      {
-        path: 'likes',
-        select: '-name -about -avatar -email -password',
-      },
-    ]))
     .then((card) => res.status(CREATE_STATUS).send({ data: card }))
     .catch((err) => {
       if (err instanceof ValidationError) {
@@ -46,7 +29,7 @@ const createCard = (req, res, next) => {
     });
 };
 
-function deleteCard(req, res, next) {
+const deleteCard = (req, res, next) => {
   const { cardId } = req.params;
   if (!mongoose.isValidObjectId(cardId)) {
     return next(new BadRequestError('Некорректный ID карточки'));
@@ -56,17 +39,17 @@ function deleteCard(req, res, next) {
       if (!card) {
         throw new NotFoundError('Карточка не найдена');
       } else if (req.user._id === card.owner.toString()) {
-        return Card.findByIdAndRemove(req.params.cardId)
+        return Card.findByIdAndRemove(cardId)
           .then(() => res.send({ message: 'Карточка удалена' }));
       } else {
-        return next(new ForbiddenError('Нельзя удалять не ваши карточкии'));
+        return next(new ForbiddenError('Нельзя удалять не ваши карточки'));
       }
     })
     .catch(next);
   return null;
-}
+};
 
-function likeCard(req, res, next) {
+const likeCard = (req, res, next) => {
   const { cardId } = req.params;
   if (!mongoose.isValidObjectId(cardId)) {
     return next(new BadRequestError('Некорректный ID карточки'));
@@ -76,15 +59,7 @@ function likeCard(req, res, next) {
     { $addToSet: { likes: req.user._id } },
     { new: true },
   )
-    .populate({
-      path: 'owner',
-      select: '-name -about -avatar -email -password',
-    })
-    .populate({
-      path: 'likes',
-      select: '-name -about -avatar -email -password',
-    })
-    .select('-about -avatar')
+    .select('-about -avatar -email -password')
     .then((card) => {
       if (!card) {
         throw new NotFoundError('Карточка не найдена');
@@ -93,7 +68,7 @@ function likeCard(req, res, next) {
     })
     .catch(next);
   return null;
-}
+};
 
 const dislikeCard = (req, res, next) => {
   const { cardId } = req.params;
@@ -105,15 +80,7 @@ const dislikeCard = (req, res, next) => {
     { $pull: { likes: req.user._id } },
     { new: true },
   )
-    .populate({
-      path: 'owner',
-      select: '-name -about -avatar -email -password',
-    })
-    .populate({
-      path: 'likes',
-      select: '-name -about -avatar -email -password',
-    })
-    .select('-about -avatar')
+    .select('-about -avatar -email -password')
     .then((card) => {
       if (!card) {
         throw new NotFoundError('Карточка не найдена');
